@@ -5,6 +5,10 @@ on:
     branches:
       - actions/config
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   create-tag:
     runs-on: ubuntu-latest
