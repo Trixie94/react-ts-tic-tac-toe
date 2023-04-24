@@ -16,16 +16,19 @@ jobs:
         with:
           node-version: 16
       - name: Set tag
-        run: echo "::set-env name=LATEST_TAG::$(git tag --sort=-v:refname | head -n 1)"
+        run: |
+          raw=$(git branch -r --contains ${{ github.ref }})
+          branch=${raw/origin\/}
+          echo "BRANCH=$branch" >> $GITHUB_ENV
       - uses: actions/github-script@v3
         env:
-          TAG: ${{ env.LATEST_TAG }}
+          TAG: ${{ env.BRANCH }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "refs/tags/${{ env.LATEST_TAG }}",
+              ref: "refs/tags/${{ env.BRANCH }}",
               sha: context.sha
             })
