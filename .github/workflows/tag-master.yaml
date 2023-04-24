@@ -12,13 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
       - uses: actions/setup-node@v3
         with:
           node-version: 16
       - uses: actions/github-script@v3
         env:
-          TAG: ${{ steps.get_version.outputs.VERSION }}
+          TAG: ${{ github.ref }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
