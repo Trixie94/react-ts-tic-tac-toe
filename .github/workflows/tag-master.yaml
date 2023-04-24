@@ -19,11 +19,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Create tag
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-        uses: actions/github-script@v3
+      - uses: actions/github-script@v3
         env:
           TAG: ${{ github.ref_name }}
         with:
