@@ -15,18 +15,15 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Set tag
-        id: set-tag
-        run: echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
       - uses: actions/github-script@v3
         env:
-          TAG: ${{ steps.set-tag.outputs.tag_name }}
+          TAG: ${{ github.ref }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "refs/tags/${{ steps.set-tag.outputs.tag_name }}",
+              ref: "refs/tags/${{ github.ref }}",
               sha: context.sha
             })
