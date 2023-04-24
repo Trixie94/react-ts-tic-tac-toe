@@ -1,0 +1,26 @@
+name: Tag Master
+
+on:
+  push:
+    branches:
+      - actions/config
+
+jobs:
+  create-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+      - uses: actions/checkout@v3
+      - name: Create tag
+      - uses: actions/github-scripts@v3
+      env:
+        TAG: ${{ github.ref_name }}
+      with:
+        github-token: ${{ github.token }}
+        script: |
+          github.git.createRef({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: "refs/tags/${{ github.ref_name }}",
+            sha: context.sha
+          })
