@@ -17,13 +17,13 @@ jobs:
           node-version: 16
       - uses: actions/github-script@v3
         env:
-          TAG: ${{ github.ref_name }}
+          TAG: ${{ GITHUB_REF:10 }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "refs/tags/${{ github.ref_name }}",
+              ref: "refs/tags/${{ GITHUB_REF:10 }}",
               sha: context.sha
             })
