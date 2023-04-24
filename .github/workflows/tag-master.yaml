@@ -11,19 +11,21 @@ jobs:
   create-tag:
     runs-on: ubuntu-latest
     steps:
+      - name: Set tag
+        run: echo "GIT_TAG=`echo $(git describe --tags --abbrev=0)`" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16
       - uses: actions/github-script@v3
         env:
-          TAG: ${{ github.ref }}
+          TAG: ${{ env.GIT_TAG }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "refs/tags/${{ github.ref }}",
+              ref: "refs/tags/${{ env.GIT_TAG }}",
               sha: context.sha
             })
