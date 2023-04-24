@@ -11,22 +11,23 @@ jobs:
   create-tag:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
       - name: Set tag
         id: set-tag
         run: echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
-      - uses: actions/github-script@v3
-        env:
-          TAG: ${{ steps.set-tag.outputs.tag_name }}
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            github.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: "refs/tags/${{ steps.set-tag.outputs.tag_name }}",
-              sha: context.sha
-            })
+      - name: Create tag
+        uses: actions/checkout@v3
+        uses: actions/setup-node@v3
+          with:
+            node-version: 16
+        uses: actions/github-script@v3
+          env:
+            TAG: ${{ steps.set-tag.outputs.tag_name }}
+          with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            script: |
+              github.git.createRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: "refs/tags/${{ steps.set-tag.outputs.tag_name }}",
+                sha: context.sha
+              })
