@@ -5,11 +5,7 @@ on:
     branches:
       - actions/config
 
-permissions:
-  id-token: write
-  contents: read
-  issues: write
-  pull-requests: write
+permissions: write-all
   
 jobs:
   create-tag:
