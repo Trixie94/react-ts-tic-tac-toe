@@ -22,7 +22,7 @@ jobs:
         env:
           TAG: ${{ github.ref_name }}
         with:
-          github-token: ${{ github.token }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.git.createRef({
               owner: context.repo.owner,
