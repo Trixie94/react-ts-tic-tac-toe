@@ -11,21 +11,21 @@ jobs:
   create-tag:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - uses: actions/checkout@v3
       - name: Set tag
-        run: echo "GIT_TAG=`echo $(git tag | sort --version-sort | tail -n1)`" >> $GITHUB_ENV
+        run: echo "::set-env name=LATEST_TAG::$(git tag --sort=-v:refname | head -n 1)"
       - uses: actions/github-script@v3
         env:
-          TAG: ${{ github.event.inputs.tag }}
+          TAG: ${{ env.LATEST_TAG }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "refs/tags/${{ github.event.inputs.tag }},
+              ref: "refs/tags/${{ env.LATEST_TAG }}",
               sha: context.sha
             })
