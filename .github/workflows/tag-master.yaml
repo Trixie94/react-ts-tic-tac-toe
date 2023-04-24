@@ -19,13 +19,13 @@ jobs:
         run: echo "GIT_TAG=`echo $(git tag | sort --version-sort | tail -n1)`" >> $GITHUB_ENV
       - uses: actions/github-script@v3
         env:
-          TAG: ${{ env.GIT_TAG }}
+          TAG: ${{ github.event.inputs.tag }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "refs/tags/${{ env.GIT_TAG }}",
+              ref: "refs/tags/${{ github.event.inputs.tag }},
               sha: context.sha
             })
