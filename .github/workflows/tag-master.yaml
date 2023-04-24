@@ -11,10 +11,10 @@ jobs:
   create-tag:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+      - uses: actions/checkout@v3
       - name: Set tag
         run: echo "GIT_TAG=`echo $(git tag | sort --version-sort | tail -n1)`" >> $GITHUB_ENV
       - uses: actions/github-script@v3
