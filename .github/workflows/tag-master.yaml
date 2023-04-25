@@ -24,6 +24,7 @@ jobs:
           NEXT_TAG=$(echo $CURRENT_TAG | awk  '{$NF += 1 ; print}') >> "$GITHUB_ENV"
           NEXT_TAG=$(echo $CURRENT_TAG | awk  '{$NF += 1 ; print}')
           echo $NEXT_TAG
+          echo $CURRENT_TAG
       - name: Create new tag
         run: |
           echo ${{env.CURRENT_TAG}}
