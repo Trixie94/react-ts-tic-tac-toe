@@ -35,5 +35,3 @@ jobs:
               ref: "refs/tags/${{ env.NEXT_TAG }}",
               sha: context.sha
             })
-          run: |
-            echo ${{ env.NEXT_TAG }}
