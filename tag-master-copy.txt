@@ -18,16 +18,9 @@ jobs:
       - name: Get current tag
         run: |
           git fetch --prune --unshallow
-          echo "CURRENT_TAG=$(echo $(git describe --tags --abrev=0))"
-      - uses: actions/github-script@v3
-        env:
-          TAG: ${{ env.BRANCH }}
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            github.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: "refs/tags/${{ env.BRANCH }}",
-              sha: context.sha
-            })
+          echo "CURRENT_TAG=$(echo $(git describe --tags --abbrev=0))"
+          echo $CURRENT_TAG
+      - name: Create new tag
+        run: |
+          echo ${{env.CURRENT_TAG}}
+          echo "NEXT_TAG=$(echo $CURRENT_TAG | awk  '{$NF += 1 ; print}')" >> "$GITHUB_ENV"

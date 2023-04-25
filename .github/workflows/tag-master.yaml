@@ -18,7 +18,8 @@ jobs:
       - name: Get current tag
         run: |
           git fetch --prune --unshallow
-          echo "CURRENT_TAG=$(echo $(git describe --tags --abbrev=0))"
+          CURRENT_TAG=$(echo $(git describe --tags --abbrev=0))
+          CURRENT_TAG=$(echo $(git describe --tags --abbrev=0)) >> "$GITHUB_ENV"
           echo $CURRENT_TAG
       - name: Create new tag
         run: |
