@@ -22,6 +22,7 @@ jobs:
           CURRENT_TAG=$(echo $(git describe --tags --abbrev=0)) >> "$GITHUB_ENV"
           echo $CURRENT_TAG
           NEXT_TAG=$(echo $CURRENT_TAG | awk  '{$NF += 1 ; print}') >> "$GITHUB_ENV"
+          NEXT_TAG=$(echo $CURRENT_TAG | awk  '{$NF += 1 ; print}')
           echo $NEXT_TAG
       - name: Create new tag
         run: |
