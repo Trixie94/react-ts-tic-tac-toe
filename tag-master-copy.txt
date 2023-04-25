@@ -15,15 +15,19 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+      - name: Get current tag
+        run: |
+          git fetch --prune --unshallow
+          echo "CURRENT_TAG=$(echo $(git describe --tags --abrev=0))"
       - uses: actions/github-script@v3
         env:
-          TAG: ${{ github.ref }}
+          TAG: ${{ env.BRANCH }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "refs/tags/${{ github.ref }}",
+              ref: "refs/tags/${{ env.BRANCH }}",
               sha: context.sha
             })
