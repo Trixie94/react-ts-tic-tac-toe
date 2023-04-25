@@ -18,7 +18,7 @@ jobs:
       - name: Get current tag
         run: |
           git fetch --prune --unshallow
-          echo "CURRENT_TAG=$(echo $(git describe --tags --abrev=0))"
+          echo "CURRENT_TAG=$(echo $(git describe --tags --abbrev=0))"
       - name: Create new tag
         run: |
           echo $CURRENT_TAG 
