@@ -27,6 +27,4 @@ jobs:
           ${{env.NEXT_TAG}}
       - name: Create new tag
         run: |
-          echo ${{env.NEXT_TAG}}
-          echo $CURRENT_TAG
-          echo "NEXT_TAG=$(echo $CURRENT_TAG | awk  '{$NF += 1 ; print}')" >> "$GITHUB_ENV"
+          ${{env.NEXT_TAG}}
