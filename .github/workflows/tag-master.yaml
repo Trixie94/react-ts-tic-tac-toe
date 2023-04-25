@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - actions/config
+  pull_request:
+    branches:
+      - actions/config
 
 permissions: write-all
   
