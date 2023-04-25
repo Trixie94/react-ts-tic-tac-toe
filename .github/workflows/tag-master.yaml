@@ -1,0 +1,35 @@
+name: Tag Master on Merged Pull Request
+
+on:
+  push:
+    branches:
+      - main
+
+permissions: write-all
+  
+jobs:
+  update-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup checkout
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Get current tag and increment by 1
+        run: |
+          git fetch --prune --unshallow
+          CURRENT_TAG=$(echo $(git describe --tags --abbrev=0))
+          echo "NEXT_TAG=$(echo $CURRENT_TAG | awk -F. '{$NF += 1 ; print $1"."$2"."$3}')" >> $GITHUB_ENV
+      - name: Push to Git
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/${{ env.NEXT_TAG }}",
+              sha: context.sha
+            })
