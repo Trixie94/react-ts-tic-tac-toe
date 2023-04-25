@@ -21,8 +21,6 @@ jobs:
         run: |
           git fetch --prune --unshallow
           CURRENT_TAG=$(echo $(git describe --tags --abbrev=0))
-          echo "CURRENT_TAG=$(echo $(git describe --tags --abbrev=0))" >> "$GITHUB_ENV"
-          NEXT_TAG=$(echo $CURRENT_TAG | awk -F. '{$NF += 1 ; print $1"."$2"."$3}')
           echo "NEXT_TAG=$(echo $CURRENT_TAG | awk -F. '{$NF += 1 ; print $1"."$2"."$3}')" >> $GITHUB_ENV
       - name: Push to Git
         uses: actions/github-script@v3
