@@ -19,6 +19,7 @@ jobs:
         run: |
           git fetch --prune --unshallow
           echo "CURRENT_TAG=$(echo $(git describe --tags --abbrev=0))"
+          echo $CURRENT_TAG
       - name: Create new tag
         run: |
           echo $CURRENT_TAG 
