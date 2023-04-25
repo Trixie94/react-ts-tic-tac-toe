@@ -11,20 +11,29 @@ jobs:
   create-tag:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Setup checkout
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Get current tag
+      - name: Get current tag and increment by 1
         run: |
           git fetch --prune --unshallow
           CURRENT_TAG=$(echo $(git describe --tags --abbrev=0))
-          CURRENT_TAG=$(echo $(git describe --tags --abbrev=0)) >> "$GITHUB_ENV"
-          echo $CURRENT_TAG
+          echo "CURRENT_TAG=$(echo $(git describe --tags --abbrev=0))" >> "$GITHUB_ENV"
           NEXT_TAG=$(echo $CURRENT_TAG | awk -F. '{$NF += 1 ; print $1"."$2"."$3}')
           echo "NEXT_TAG=$(echo $CURRENT_TAG | awk -F. '{$NF += 1 ; print $1"."$2"."$3}')" >> $GITHUB_ENV
-          echo $NEXT_TAG
-          echo ${{ env.NEXT_TAG }}
-      - name: Create new tag
-        run: |
-          echo ${{ env.NEXT_TAG }}
+      - name: Push to Git
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/${{ env.NEXT_TAG }}",
+              sha: context.sha
+            })
+          run: |
+            echo ${{ env.NEXT_TAG }}
