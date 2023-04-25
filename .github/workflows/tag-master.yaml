@@ -21,10 +21,10 @@ jobs:
           CURRENT_TAG=$(echo $(git describe --tags --abbrev=0))
           CURRENT_TAG=$(echo $(git describe --tags --abbrev=0)) >> "$GITHUB_ENV"
           echo $CURRENT_TAG
-          NEXT_TAG=$(echo $CURRENT_TAG | awk -F. '{$NF += 1 ; print $1"."$2"."$3}') >> "$GITHUB_ENV"
+          NEXT_TAG=$(echo $CURRENT_TAG | awk -F. '{$NF += 1 ; print $1"."$2"."$3}') >> $GITHUB_ENV
           NEXT_TAG=$(echo $CURRENT_TAG | awk -F. '{$NF += 1 ; print $1"."$2"."$3}')
           echo $NEXT_TAG
-          ${{env.NEXT_TAG}}
+          echo ${{ env.NEXT_TAG }}
       - name: Create new tag
         run: |
-          ${{env.NEXT_TAG}}
+          echo ${{ env.NEXT_TAG }}
