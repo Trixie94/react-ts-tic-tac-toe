@@ -1,14 +1,14 @@
-name: Tag Master
+name: Tag Master on Merged Pull Request
 
 on:
   push:
     branches:
-      - actions/config
+      - main
 
 permissions: write-all
   
 jobs:
-  create-tag:
+  update-tag:
     runs-on: ubuntu-latest
     steps:
       - name: Setup checkout
